@@ -1,28 +1,39 @@
-// const request = window.indexedDB.open("budget", 1); 
+const transName = document.getElementById("t-name");
+const transAmount = document.getElementById("t-amount");
+const addButton = document.getElementById("add-btn");
+const subButton = document.getElementById("sub-btn");
 
-// // Create schema
-// request.onupgradeneeded = event => {
-//     const db = event.target.result;
+const request = window.indexedDB.open("budget", 1); 
 
-//     // Creates an object store with a budgetID keypath that can be used to query on.
-//     const budgetStore = db.createObjectStore("budget", { keyPath: "budgetID" });
-//     // Creates a budgetIndex that we can query on.
-//     budgetStore.createIndex("budgetIndex", "transactions");
-// }
+function addTransaction() {
+    const trans = {
+        name: transName.value,
+        amount: transAmount.value,
+    }
 
-// // Opens a transaction, accesses the toDoList objectStore and budgetIndex.
-// request.onsuccess = () => {
-//     const db = request.result;
-//     const transaction = db.transaction(["budget"], "readwrite");
-//     const budgetStore = transaction.objectStore("budget");
-//     const budgetIndex = budgetStore.index("budgetIndex");
+    console.log(trans);
+}
 
-//     // Add data to our objectStore
-//     // budgetStore.add({ listID: "1", transactions: "" });
+// Create schema
+request.onupgradeneeded = e => {
+    // const db = e.target.result;
 
-//     // Return all items from db
-//     const getRequestIdx = budgetIndex.getAll();
-//     getRequestIdx.onsuccess = () => {
-//         console.log(getRequestIdx.result);
-//     };
-// };
+    // Creates an object store with a budgetID keypath that can be used to query on.
+    // const budgetStore = db.createObjectStore("transactions", { keyPath: "name" });
+    // Creates a budgetIndex that we can query on.
+}
+
+// Opens a transaction, accesses the toDoList objectStore and budgetIndex.
+request.onsuccess = () => {
+    // const db = request.result;
+
+    // Add data to our objectStore
+
+    // Return all items from db
+};
+
+request.onerror = () => {
+    console.log("error!");
+}
+
+addButton.addEventListener("click", addTransaction);
