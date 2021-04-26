@@ -3,42 +3,41 @@ const transAmount = document.getElementById("t-amount");
 const addButton = document.getElementById("add-btn");
 const subButton = document.getElementById("sub-btn");
 
-let db;
-const request = window.indexedDB.open("budget", 1); 
+const request = window.indexedDB.open("budget", 1);
 
-function addTransaction() {
-    const trans = {
-        name: transName.value,
-        amount: transAmount.value,
+function addTransaction(tname, tamount) {
+    request.onsuccess = () => {
+        const db = request.result;
+        const transaction = db.transaction("transactions", "readwrite");
+
+        const tranStore = transaction.objectStore("transactions");
+        tranStore.add({
+            name: tname,
+            amount: tamount
+        });
     }
-
-    const tx = db.transaction("transactions", "readwrite");
-    const transact = tx.objectStore = tx.objectStore("transactions");
-    transact.add(trans);
-
-    console.log(trans);
 }
 
 // Create schema
-request.onupgradeneeded = ({ target }) => {
-    db = target.result;
+request.onupgradeneeded = event => {
+    const db = event.target.result;
 
-    // Creates an object store with a budgetID keypath that can be used to query on.
-    const budgetStore = db.createObjectStore("transactions", { keyPath: "name" });
-    // Creates a budgetIndex that we can query on.
+    const budgetStore = db.createObjectStore("transactions", {keyPath: "transactionid"});
+    budgetStore.createIndex("name", "name");
+    budgetStore.createIndex("amount", "amount");
 }
 
-// Opens a transaction, accesses the toDoList objectStore and budgetIndex.
-request.onsuccess = () => {
-    db = request.result;
+// Writing async function that will create the database then allow us to write/pull from it
+addButton.addEventListener("click", function(event) {
+    event.preventDefault();
+    addTransaction(transName.value, transAmount.value)
+});
+subButton.addEventListener("click", function(event) {
+    event.preventDefault();
+    addTransaction(transName.value, transAmount.value);
+});
 
-    // Add data to our objectStore
-
-    // Return all items from db
-};
-
-request.onerror = () => {
-    console.log("error!");
-}
-
-addButton.addEventListener("submit", addTransaction);
+// const trans = {
+//     name: transName.value,
+//     amount: transAmount.value,
+// }
