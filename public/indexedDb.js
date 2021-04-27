@@ -21,7 +21,8 @@ addButton.addEventListener("click", request.onsuccess = () => {
 
     budgetStore.add({
         name: transName.value,
-        amount: Math.abs(transAmount.value)
+        amount: Math.abs(transAmount.value),
+        date: Date.now()
     });
 
     const getRequest = budgetStore.getAll();
@@ -38,7 +39,8 @@ subButton.addEventListener("click", request.onsuccess = () => {
 
     budgetStore.add({
         name: transName.value,
-        amount: -Math.abs(transAmount.value)
+        amount: -Math.abs(transAmount.value),
+        date: Date.now()
     });
 
     const getRequest = budgetStore.getAll();
