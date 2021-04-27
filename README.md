@@ -36,3 +36,5 @@ Feel free to send me an email, as well: smcmillan1991@gmail.com
 
 ## Takeaways and Future Development
 
+Primary focus for debugging and future development will be to add functionality that reloads IndexedDB from offline activity.  The transactions are being stored in IndexedDB but not being read when the page reloads from being offline.  
+
