@@ -5,37 +5,35 @@ const subButton = document.getElementById("sub-btn");
 
 const request = window.indexedDB.open("budget", 1);
 
-function addTransaction(tname, tamount) {
-    request.onsuccess = () => {
-        const db = request.result;
-        const transaction = db.transaction("transactions", "readwrite");
-
-        const tranStore = transaction.objectStore("transactions");
-        tranStore.add({
-            name: tname,
-            amount: tamount
-        });
-    }
-}
-
 // Create schema
 request.onupgradeneeded = event => {
     const db = event.target.result;
 
-    const budgetStore = db.createObjectStore("transactions", {keyPath: "transactionid"});
-    budgetStore.createIndex("name", "name");
-    budgetStore.createIndex("amount", "amount");
+    const budgetStore = db.createObjectStore("budget", {keyPath: "name"});
+    budgetStore.createIndex("transactionIndex", "amount");
+}
+
+request.onsuccess = () => {
+    const db = request.result;
+    const transaction = db.transaction(["budget"], "readwrite");
+    const budgetStore = transaction.objectStore("budget");
+    const transactionIndex = budgetStore.index("transactionIndex");
+
+    budgetStore.add({
+        name: "Rent",
+        amount: 1200
+    });
 }
 
 // Writing async function that will create the database then allow us to write/pull from it
-addButton.addEventListener("click", function(event) {
-    event.preventDefault();
-    addTransaction(transName.value, transAmount.value)
-});
-subButton.addEventListener("click", function(event) {
-    event.preventDefault();
-    addTransaction(transName.value, transAmount.value);
-});
+// addButton.addEventListener("click", function(event) {
+//     event.preventDefault();
+//     addTransaction(transName.value, transAmount.value)
+// });
+// subButton.addEventListener("click", function(event) {
+//     event.preventDefault();
+//     addTransaction(transName.value, transAmount.value);
+// });
 
 // const trans = {
 //     name: transName.value,
