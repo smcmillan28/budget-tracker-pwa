@@ -2,7 +2,6 @@ const transName = document.getElementById("t-name");
 const transAmount = document.getElementById("t-amount");
 const addButton = document.getElementById("add-btn");
 const subButton = document.getElementById("sub-btn");
-const buttons = document.querySelector("button");
 
 const request = window.indexedDB.open("budget", 1);
 
@@ -24,6 +23,11 @@ addButton.addEventListener("click", request.onsuccess = () => {
         name: transName.value,
         amount: Math.abs(transAmount.value)
     });
+
+    const getRequest = budgetStore.getAll();
+    getRequest.onsuccess = () => {
+        console.log(getRequest.result);
+    };
 });
 
 subButton.addEventListener("click", request.onsuccess = () => {
@@ -36,19 +40,10 @@ subButton.addEventListener("click", request.onsuccess = () => {
         name: transName.value,
         amount: -Math.abs(transAmount.value)
     });
+
+    const getRequest = budgetStore.getAll();
+    getRequest.onsuccess = () => {
+        console.log(getRequest.result);
+    };
 });
 
-// Writing async function that will create the database then allow us to write/pull from it
-// addButton.addEventListener("click", function(event) {
-//     event.preventDefault();
-//     addTransaction(transName.value, transAmount.value)
-// });
-// subButton.addEventListener("click", function(event) {
-//     event.preventDefault();
-//     addTransaction(transName.value, transAmount.value);
-// });
-
-// const trans = {
-//     name: transName.value,
-//     amount: transAmount.value,
-// }
